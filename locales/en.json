@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "home": "Home",
+    "portfolio": "Portfolio",
+    "services": "Services",
+    "about": "About",
+    "bookNow": "Book Now"
+  },
+  "bookings": {
+    "backHome": "Back Home",
+    "title": "Book a Free Consultation",
+    "subtitle": "We help you choose the best solutions to grow your business",
+    "form": {
+      "title": "Booking Form",
+      "name": "Name",
+      "email": "Email",
+      "service": "Service",
+      "date": "Date",
+      "message": "Message (optional)",
+      "placeholders": {
+        "name": "Enter your name",
+        "email": "example@email.com",
+        "message": "Add any additional notes..."
+      },
+      "submit": "Book Now",
+      "submitting": "Sending...",
+      "success": "✅ Booking saved successfully!",
+      "error": "Failed to add booking"
+    },
+    "servicesOptions": ["IT Solutions", "Automation", "AI Solutions", "App Development"]
+  }
+}
