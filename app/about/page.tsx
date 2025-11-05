@@ -62,7 +62,7 @@ export default function About() {
             ].map((value, i) => (
               <div
                 key={i}
-                className="bg-white dark:bg-slate-800 p-6 rounded-lg border border-slate-200 dark:border-slate-700 transition-colors"
+                className="bg-gradient-to-br from-white to-gray-50 dark:from-slate-800 dark:to-slate-900 backdrop-blur-md p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl shadow-gray-700/50 dark:shadow-black/60 hover:shadow-2xl hover:shadow-purple-500/30 ring-1 ring-white/50 dark:ring-slate-600/30 transition-all duration-400 hover:-translate-y-2 hover:scale-105"
               >
                 <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{value.title}</h3>
                 <p className="text-gray-700 dark:text-gray-400">{value.desc}</p>

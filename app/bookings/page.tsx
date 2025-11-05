@@ -100,7 +100,7 @@ export default function BookingsPage() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="bg-white dark:bg-slate-900/70 backdrop-blur-xl p-8 rounded-2xl border border-slate-300 dark:border-slate-700 hover:border-purple-500/50 transition-all shadow-lg shadow-purple-500/10"
+          className="bg-gradient-to-br from-white to-gray-50 dark:from-slate-800 dark:to-slate-900 backdrop-blur-md p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl shadow-gray-700/50 dark:shadow-black/60 hover:shadow-2xl hover:shadow-purple-500/30 ring-1 ring-white/50 dark:ring-slate-600/30 transition-all duration-400 hover:-translate-y-2 hover:scale-105"
         >
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">{t("bookings.form.title")}</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
