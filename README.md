@@ -1,30 +1,75 @@
-# Alpha Trio Tech App
+# Booking Funnel Implementation
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+This implements a lightweight 2-step booking funnel modal for the Next.js project using shadcn UI. It intercepts booking/scheduling CTAs, collects user intent and qualification data, sends it to a webhook, and redirects to Calendly.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/mohssinicardi01-1153s-projects/v0-alpha-trio-tech-app)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/4oLCVXg9a3b)
+## Installation & Setup
 
-## Overview
+1. **Install Dependencies** (if not already):
+   - Ensure shadcn/ui is set up with `Dialog`, `Button`, `RadioGroup`, `Input`, `Label`.
+   - Install `lucide-react` for icons: `npm install lucide-react`
+   - For HMAC: Node.js crypto is built-in, no extra install needed.
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+2. **Environment Variables**:
+   Add to `.env.local`:
+   ```
+   WEBHOOK_SECRET=your-hmac-secret-key-here  # Required for webhook signature validation
+   NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/booking-alphatriotech/30min  # Calendly redirect URL
+   ```
 
-## Deployment
+3. **Files Added**:
+   - `components/BookingFunnel.tsx`: The main React component.
+   - `utils/hmac.ts`: HMAC signature verification helper.
+   - `app/api/webhook/booking/route.ts`: Next.js API route for handling POST payloads.
+   - `components/BookingFunnel.test.tsx`: Example unit tests (requires Jest + @testing-library/react setup).
 
-Your project is live at:
+4. **Integration**:
+   - Mount the component in your top-level layout (App Router) to enable global event listening.
+   - In `app/layout.tsx`, import and add `<BookingFunnel />` inside the `<body>` or providers:
+     ```tsx
+     import { BookingFunnel } from '@/components/BookingFunnel';
 
-**[https://vercel.com/mohssinicardi01-1153s-projects/v0-alpha-trio-tech-app](https://vercel.com/mohssinicardi01-1153s-projects/v0-alpha-trio-tech-app)**
+     export default function RootLayout({ children }: { children: React.ReactNode }) {
+       return (
+         <html lang="en">
+           <body>
+             {/* Your providers */}
+             {children}
+             <BookingFunnel />  // Add here
+           </body>
+         </html>
+       );
+     }
+     ```
+   - For Pages Router, add to `_app.tsx` or `_document.tsx`.
 
-## Build your app
+5. **Webhook Handling**:
+   - The API route validates HMAC signature using `X-SIGN` header.
+   - On success, logs the payload. Extend to forward to CRM (e.g., via fetch to external API).
+   - Example payload:
+     ```json
+     {
+       "intent": "Automate operations",
+       "otherText": "Custom integration",
+       "company_size": "11-50",
+       "timeline": "ASAP",
+       "ts": "2025-11-07T14:00:00Z"
+     }
+     ```
 
-Continue building your app on:
+6. **Testing**:
+   - Run tests: `npm test` (assumes Jest configured).
+   - Tests cover modal opening, validation, and payload/redirect.
 
-**[https://v0.app/chat/projects/4oLCVXg9a3b](https://v0.app/chat/projects/4oLCVXg9a3b)**
+7. **Fallback**:
+   - If JS disabled, original anchor links work (no interception).
+   - Mobile-responsive via shadcn/Tailwind.
 
-## How It Works
+## Usage Notes
+- Intercepts clicks on `a[href*="book" i]`, `a[href*="schedule" i]`, `a[href*="consult" i]`, or `.book-cta`.
+- Events pushed to `window.dataLayer` (GTM) or console.
+- No personal data collected; only intent/qualifiers.
+- Component size: ~5KB minified (Tailwind purged).
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+## Extending
+- Add server-side CRM integration in `route.ts` (e.g., POST to HubSpot/Salesforce).
+- Customize options/UI in `BookingFunnel.tsx`.

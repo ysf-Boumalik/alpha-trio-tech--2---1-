@@ -6,6 +6,7 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useLanguage } from "./language-provider"
 import { useTranslation } from "@/lib/useTranslation"
+import { Button } from "./ui/button"
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
@@ -38,12 +39,11 @@ export default function Navigation() {
             <Link href="/portfolio" className="hover:text-purple-500 transition"> {t("Portfolio")}</Link>
             <Link href="/services" className="hover:text-purple-500 transition">{t("Services")}</Link>
             <Link href="/about" className="hover:text-purple-500 transition">{t("About")}</Link>
-            <Link
-              href="/bookings"
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition"
+            <Button
+              className="book-cta bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition hover:cursor-pointer"
             >
               {t("Book Now")}
-            </Link>
+            </Button>
 
             {/* 🌙 Theme Toggle */}
             <button
