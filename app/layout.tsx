@@ -27,8 +27,10 @@ export default function RootLayout({
         className={`font-sans antialiased bg-white text-slate-900 dark:bg-slate-950 dark:text-white transition-colors duration-200`}
       >
         <ThemeProvider attribute="class">
-          <LanguageProvider>{children}</LanguageProvider>
-          <BookingFunnel />
+          <LanguageProvider>
+            {children}
+            <BookingFunnel />
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

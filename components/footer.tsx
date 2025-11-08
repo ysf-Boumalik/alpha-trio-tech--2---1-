@@ -89,15 +89,15 @@ export default function Footer() {
           </p>
           <div className="flex space-x-4">
             <a href="#" className="text-gray-400 hover:text-purple-400 transition">
-              <span className="sr-only">Facebook</span>
+              <span className="sr-only">{t("Facebook")}</span>
               {/* Facebook Icon */}
             </a>
             <a href="#" className="text-gray-400 hover:text-purple-400 transition">
-              <span className="sr-only">Twitter</span>
+              <span className="sr-only">{t("Twitter")}</span>
               {/* Twitter Icon */}
             </a>
             <a href="#" className="text-gray-400 hover:text-purple-400 transition">
-              <span className="sr-only">LinkedIn</span>
+              <span className="sr-only">{t("LinkedIn")}</span>
               {/* LinkedIn Icon */}
             </a>
           </div>

@@ -15,14 +15,9 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { X } from "lucide-react";
 import { motion } from "framer-motion";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
+import { useTranslation } from "@/lib/useTranslation";
+import { useLanguage } from "@/components/language-provider";
 
 const CALENDLY_URL =
   process.env.NEXT_PUBLIC_CALENDLY_URL ||
@@ -30,60 +25,111 @@ const CALENDLY_URL =
 const WEBHOOK_URL = "/api/webhook/booking";
 
 interface BookingData {
-  intent: string;
-  otherText?: string;
-  company_size: string;
+  opportunity: string;
+  otherOpportunity?: string;
+  transformation: string;
+  otherTransformation?: string;
   timeline: string;
+  budget: string;
+  gameChanger: string;
   ts: string;
 }
 
-const INTENT_OPTIONS = [
-  { value: "Automate operations", label: "Automate operations" },
-  { value: "Build an app", label: "Build an app" },
-  { value: "AI solution", label: "AI solution" },
-  { value: "Other", label: "Other" },
-];
-
-const COMPANY_SIZE_OPTIONS = [
-  { value: "1-10", label: "1–10" },
-  { value: "11-50", label: "11–50" },
-  { value: "50+", label: "50+" },
-];
-
-const TIMELINE_OPTIONS = [
-  { value: "ASAP", label: "ASAP" },
-  { value: "1-3 months", label: "1–3 months" },
-  { value: "3+ months", label: "3+ months" },
-];
-
-const socialTweets = [
-  {
-    author: "Elon Musk",
-    text: "Businesses that ignore AI will fall behind faster than they expect.",
-    handle: "@elonmusk",
-    timestamp: "2024-11-01",
-  },
-  {
-    author: "Sam Altman",
-    text: "Integrating AI isn’t optional anymore — it’s infrastructure.",
-    handle: "@sama",
-    timestamp: "2024-10-28",
-  },
-  {
-    author: "Naval Ravikant",
-    text: "The future of business is AI-driven personalization and automation.",
-    handle: "@naval",
-    timestamp: "2024-11-05",
-  },
-];
-
 export function BookingFunnel() {
+  const { t } = useTranslation();
+  const { language } = useLanguage();
+  const isRTL = language === "AR";
+
+  // Question 1: What's the most exciting opportunity or biggest roadblock?
+  const OPPORTUNITY_OPTIONS = [
+    {
+      value: "Automate workflows",
+      label: t("bookingFunnel.step1.options.automateWorkflows"),
+    },
+    {
+      value: "Scale with AI",
+      label: t("bookingFunnel.step1.options.scaleWithAI"),
+    },
+    {
+      value: "Improve efficiency",
+      label: t("bookingFunnel.step1.options.improveEfficiency"),
+    },
+    {
+      value: "Digital transformation",
+      label: t("bookingFunnel.step1.options.digitalTransformation"),
+    },
+    { value: "Other", label: t("bookingFunnel.step1.options.other") },
+  ];
+
+  // Question 2: If you could wave a magic wand and transform one aspect?
+  const TRANSFORMATION_OPTIONS = [
+    {
+      value: "App performance",
+      label: t("bookingFunnel.step2.options.appPerformance"),
+    },
+    {
+      value: "Data insights",
+      label: t("bookingFunnel.step2.options.dataInsights"),
+    },
+    {
+      value: "Customer experience",
+      label: t("bookingFunnel.step2.options.customerExperience"),
+    },
+    {
+      value: "Operational speed",
+      label: t("bookingFunnel.step2.options.operationalSpeed"),
+    },
+    { value: "Other", label: t("bookingFunnel.step2.options.other") },
+  ];
+
+  // Question 3: Timeline for results
+  const TIMELINE_OPTIONS = [
+    {
+      value: "Immediately",
+      label: t("bookingFunnel.step3.timelineOptions.immediately"),
+    },
+    {
+      value: "1-3 months",
+      label: t("bookingFunnel.step3.timelineOptions.oneToThreeMonths"),
+    },
+    {
+      value: "3-6 months",
+      label: t("bookingFunnel.step3.timelineOptions.threeToSixMonths"),
+    },
+    {
+      value: "6+ months",
+      label: t("bookingFunnel.step3.timelineOptions.sixPlusMonths"),
+    },
+  ];
+
+  // Question 3: Investment range
+  const BUDGET_OPTIONS = [
+    {
+      value: "$5K-15K",
+      label: t("bookingFunnel.step3.budgetOptions.fiveToFifteenK"),
+    },
+    {
+      value: "$15K-50K",
+      label: t("bookingFunnel.step3.budgetOptions.fifteenToFiftyK"),
+    },
+    {
+      value: "$50K-100K",
+      label: t("bookingFunnel.step3.budgetOptions.fiftyToHundredK"),
+    },
+    {
+      value: "$100K+",
+      label: t("bookingFunnel.step3.budgetOptions.hundredKPlus"),
+    },
+  ];
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
-  const [intent, setIntent] = useState("");
-  const [otherText, setOtherText] = useState("");
-  const [companySize, setCompanySize] = useState("");
+  const [opportunity, setOpportunity] = useState("");
+  const [otherOpportunity, setOtherOpportunity] = useState("");
+  const [transformation, setTransformation] = useState("");
+  const [otherTransformation, setOtherTransformation] = useState("");
   const [timeline, setTimeline] = useState("");
+  const [budget, setBudget] = useState("");
+  const [gameChanger, setGameChanger] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const firstFocusableRef = useRef<HTMLButtonElement>(null);
@@ -113,17 +159,21 @@ export function BookingFunnel() {
     }
   };
 
-  const handleContinueStep3 = async () => {
+  const handleContinueStep4 = async () => {
     setIsSubmitting(true);
     const payload: BookingData = {
-      intent,
-      otherText: intent === "Other" ? otherText : undefined,
-      company_size: companySize,
+      opportunity,
+      otherOpportunity: opportunity === "Other" ? otherOpportunity : undefined,
+      transformation,
+      otherTransformation:
+        transformation === "Other" ? otherTransformation : undefined,
       timeline,
+      budget,
+      gameChanger,
       ts: new Date().toISOString(),
     };
 
-    pushToDataLayer("funnel_step3_completed", { payload });
+    pushToDataLayer("funnel_step4_completed", { payload });
 
     let success = false;
     for (let attempt = 0; attempt < 3; attempt++) {
@@ -133,18 +183,21 @@ export function BookingFunnel() {
       await new Promise((resolve) => setTimeout(resolve, 1000 * (attempt + 1)));
     }
 
-    pushToDataLayer("funnel_step4_started", { success, attempts: 3 });
+    pushToDataLayer("funnel_step5_started", { success, attempts: 3 });
 
     setIsSubmitting(false);
-    setStep(4);
+    setStep(5);
   };
 
   const resetForm = () => {
     setStep(1);
-    setIntent("");
-    setOtherText("");
-    setCompanySize("");
+    setOpportunity("");
+    setOtherOpportunity("");
+    setTransformation("");
+    setOtherTransformation("");
     setTimeline("");
+    setBudget("");
+    setGameChanger("");
   };
 
   const handleCancel = () => {
@@ -154,22 +207,43 @@ export function BookingFunnel() {
   };
 
   const handleContinueStep1 = () => {
-    pushToDataLayer("funnel_step1_completed", { intent, otherText });
+    pushToDataLayer("funnel_step1_completed", {
+      opportunity,
+      otherOpportunity,
+    });
     setStep(2);
   };
 
   const handleContinueStep2 = () => {
-    pushToDataLayer("funnel_step2_completed", {});
+    pushToDataLayer("funnel_step2_completed", {
+      transformation,
+      otherTransformation,
+    });
     setStep(3);
   };
 
+  const handleContinueStep3 = () => {
+    pushToDataLayer("funnel_step3_completed", { timeline, budget });
+    setStep(4);
+  };
+
   const canContinueStep1 =
-    intent &&
-    (intent !== "Other" ||
-      (intent === "Other" &&
-        otherText.trim().length > 0 &&
-        otherText.trim().length <= 30));
-  const canContinueStep3 = companySize && timeline;
+    opportunity &&
+    (opportunity !== "Other" ||
+      (opportunity === "Other" &&
+        otherOpportunity.trim().length > 0 &&
+        otherOpportunity.trim().length <= 50));
+
+  const canContinueStep2 =
+    transformation &&
+    (transformation !== "Other" ||
+      (transformation === "Other" &&
+        otherTransformation.trim().length > 0 &&
+        otherTransformation.trim().length <= 50));
+
+  const canContinueStep3 = timeline && budget;
+
+  const canContinueStep4 = gameChanger.trim().length >= 10;
 
   // Focus management for accessibility
   useEffect(() => {
@@ -215,14 +289,16 @@ export function BookingFunnel() {
       target = dialogRef.current.querySelector(
         'input[type="radio"]'
       ) as HTMLElement;
-    } else if (step === 3) {
-      target =
-        (dialogRef.current.querySelector("#company-1-10") as HTMLElement) ||
-        (dialogRef.current.querySelector('input[type="radio"]') as HTMLElement);
     } else if (step === 2) {
       target = dialogRef.current.querySelector(
-        ".continue-step2"
+        'input[type="radio"]'
       ) as HTMLElement;
+    } else if (step === 3) {
+      target = dialogRef.current.querySelector(
+        'input[type="radio"]'
+      ) as HTMLElement;
+    } else if (step === 4) {
+      target = dialogRef.current.querySelector("textarea") as HTMLElement;
     }
 
     if (target) {
@@ -263,9 +339,9 @@ export function BookingFunnel() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
 
-  // Auto redirect on step 4
+  // Auto redirect on step 5
   useEffect(() => {
-    if (step === 4) {
+    if (step === 5) {
       pushToDataLayer("redirect_to_calendly", {});
       const timer = setTimeout(() => {
         window.open(CALENDLY_URL, "_blank");
@@ -282,88 +358,144 @@ export function BookingFunnel() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-md">
           <DialogContent
             ref={dialogRef}
-            className="sm:max-w-2xl max-h-[90vh] overflow-y-auto"
+            className={`sm:max-w-2xl max-h-[90vh] overflow-y-auto ${
+              isRTL ? "text-right" : "text-left"
+            } ${
+              isRTL
+                ? "[&_[data-slot=dialog-close]]:left-4 [&_[data-slot=dialog-close]]:right-auto [&_[data-slot=dialog-close]]:cursor-pointer"
+                : "[&_[data-slot=dialog-close]]:cursor-pointer"
+            }`}
+            style={{ direction: isRTL ? "rtl" : "ltr" }}
             role="dialog"
             aria-modal="true"
             aria-labelledby="dialog-title"
             onInteractOutside={(e) => e.preventDefault()}
           >
-            <DialogHeader>
-              <DialogTitle className="flex items-center justify-between">
+            <DialogHeader className={isRTL ? "text-right" : "text-left"}>
+              <DialogTitle
+                className={`flex items-center ${
+                  isRTL ? "justify-start" : "justify-between"
+                }`}
+              >
                 {step === 1
-                  ? "What’s the main problem you want solved?"
+                  ? t("bookingFunnel.step1.title")
                   : step === 2
-                  ? "What leaders are saying about AI and online presence"
+                  ? t("bookingFunnel.step2.title")
                   : step === 3
-                  ? "A bit more about your needs"
-                  : "Let's schedule a call"}
+                  ? t("bookingFunnel.step3.title")
+                  : step === 4
+                  ? t("bookingFunnel.step4.title")
+                  : t("bookingFunnel.step5.title")}
                 <span id="dialog-title" className="sr-only">
                   {step === 1
-                    ? "What’s the main problem you want solved?"
+                    ? t("bookingFunnel.step1.title")
                     : step === 2
-                    ? "What leaders are saying about AI and online presence"
+                    ? t("bookingFunnel.step2.title")
                     : step === 3
-                    ? "A bit more about your needs"
-                    : "Let's schedule a call"}
+                    ? t("bookingFunnel.step3.title")
+                    : step === 4
+                    ? t("bookingFunnel.step4.title")
+                    : t("bookingFunnel.step5.title")}
                 </span>
               </DialogTitle>
-              <DialogDescription className="text-sm text-muted-foreground">
-                50+ projects • 30+ happy clients • 5+ years
-              </DialogDescription>
-              <Progress value={Math.round((step / 4) * 100)} className="mt-4" />
+              <Progress
+                value={Math.round((step / 5) * 100)}
+                className="mt-4"
+                isRTL={isRTL}
+              />
             </DialogHeader>
 
             <div className="py-4 space-y-6">
               {step === 1 && (
                 <>
-                  <div className="space-y-2">
-                    <RadioGroup value={intent} onValueChange={setIntent}>
-                      {INTENT_OPTIONS.map((option) => (
+                  <div className="space-y-4">
+                    <p className="text-sm text-muted-foreground">
+                      {t("bookingFunnel.step1.description")}
+                    </p>
+                    <RadioGroup
+                      value={opportunity}
+                      onValueChange={setOpportunity}
+                    >
+                      {OPPORTUNITY_OPTIONS.map((option) => (
                         <div
                           key={option.value}
-                          className="flex items-center space-x-2"
+                          className="flex items-center w-full p-2 rounded-md hover:bg-muted/50 transition-colors cursor-pointer gap-4"
                         >
-                          <RadioGroupItem
-                            value={option.value}
-                            id={option.value}
-                            aria-label={`Select intent ${option.label}`}
-                            ref={
-                              option.value === "Automate operations"
-                                ? firstFocusableRef
-                                : undefined
-                            }
-                          />
-                          <Label htmlFor={option.value}>{option.label}</Label>
+                          {isRTL ? (
+                            <>
+                              <RadioGroupItem
+                                value={option.value}
+                                id={option.value}
+                                aria-label={`Select opportunity ${option.label}`}
+                                ref={
+                                  option.value === "Automate workflows"
+                                    ? firstFocusableRef
+                                    : undefined
+                                }
+                              />
+                              <Label
+                                htmlFor={option.value}
+                                className="cursor-pointer flex-1 text-right"
+                              >
+                                {option.label}
+                              </Label>
+                            </>
+                          ) : (
+                            <>
+                              <RadioGroupItem
+                                value={option.value}
+                                id={option.value}
+                                aria-label={`Select opportunity ${option.label}`}
+                                ref={
+                                  option.value === "Automate workflows"
+                                    ? firstFocusableRef
+                                    : undefined
+                                }
+                              />
+                              <Label
+                                htmlFor={option.value}
+                                className="cursor-pointer flex-1 text-left"
+                              >
+                                {option.label}
+                              </Label>
+                            </>
+                          )}
                         </div>
                       ))}
                     </RadioGroup>
-                    {intent === "Other" && (
+                    {opportunity === "Other" && (
                       <div className="pt-2">
-                        <Label htmlFor="otherText">
-                          Please specify (max 30 chars)
+                        <Label
+                          htmlFor="otherOpportunity"
+                          className={isRTL ? "text-right" : "text-left"}
+                        >
+                          {t("bookingFunnel.step1.otherLabel")}
                         </Label>
                         <Input
-                          id="otherText"
-                          value={otherText}
+                          id="otherOpportunity"
+                          value={otherOpportunity}
                           onChange={(e) =>
-                            setOtherText(e.target.value.slice(0, 30))
+                            setOtherOpportunity(e.target.value.slice(0, 50))
                           }
-                          placeholder="e.g., Custom integration"
-                          maxLength={30}
-                          className="mt-1"
-                          aria-describedby="other-count"
+                          placeholder={t(
+                            "bookingFunnel.step1.otherPlaceholder"
+                          )}
+                          maxLength={50}
+                          className={`mt-1 ${isRTL ? "text-right" : "text-left"}`}
+                          style={{ direction: isRTL ? "rtl" : "ltr" }}
+                          aria-describedby="other-opportunity-count"
                         />
                         <p
-                          id="other-count"
+                          id="other-opportunity-count"
                           className="text-xs text-muted-foreground mt-1 sr-only"
                         >
-                          {otherText.length} of 30 characters
+                          {otherOpportunity.length} of 50 characters
                         </p>
                         <p
-                          className="text-xs text-muted-foreground mt-1"
+                          className={`text-xs text-muted-foreground mt-1 ${isRTL ? "text-right" : "text-left"}`}
                           aria-hidden="true"
                         >
-                          {otherText.length}/30
+                          {otherOpportunity.length}/50
                         </p>
                       </div>
                     )}
@@ -374,7 +506,7 @@ export function BookingFunnel() {
                       disabled={!canContinueStep1}
                       aria-label="Continue to next step"
                     >
-                      Continue
+                      {t("bookingFunnel.step1.continue")}
                     </Button>
                   </div>
                 </>
@@ -386,60 +518,106 @@ export function BookingFunnel() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <div className="space-y-4 max-h-[300px] overflow-y-auto">
-                    <h3 className="text-lg font-semibold">
-                      What leaders are saying about AI and online presence
-                    </h3>
-                    <Carousel className="w-full">
-                      <CarouselContent className="h-[200px]">
-                        {socialTweets.map((tweet, index) => (
-                          <CarouselItem key={index}>
-                            <div className="p-1">
-                              <Card className="h-full">
-                                <CardContent className="flex items-start p-4 space-y-2 h-full">
-                                  <img
-                                    src="/placeholder-user.jpg"
-                                    alt={`${tweet.author}'s avatar`}
-                                    className="w-8 h-8 rounded-full flex-shrink-0"
-                                  />
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center space-x-2 mb-1">
-                                      <span className="font-medium text-sm">
-                                        {tweet.author}
-                                      </span>
-                                      <span className="text-xs text-muted-foreground">
-                                        {tweet.handle}
-                                      </span>
-                                    </div>
-                                    <p className="text-sm text-foreground leading-tight max-h-[3em] overflow-hidden">
-                                      {tweet.text}
-                                    </p>
-                                    <p className="text-xs text-muted-foreground mt-2">
-                                      {tweet.timestamp}
-                                    </p>
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            </div>
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-                    </Carousel>
+                  <div className="space-y-4">
                     <p className="text-sm text-muted-foreground">
-                      AI-powered systems are redefining efficiency and
-                      visibility. Let’s prepare your business to stay ahead.
+                      {t("bookingFunnel.step2.description")}
                     </p>
-                    <p className="text-sm text-muted-foreground italic">
-                      Industry leaders agree — AI and digital presence are the
-                      new growth levers. Let’s explore how for your company.
-                    </p>
+                    <RadioGroup
+                      value={transformation}
+                      onValueChange={setTransformation}
+                    >
+                      {TRANSFORMATION_OPTIONS.map((option) => (
+                        <div
+                          key={option.value}
+                          className="flex items-center w-full p-2 rounded-md hover:bg-muted/50 transition-colors cursor-pointer gap-4"
+                        >
+                          {isRTL ? (
+                            <>
+                              <RadioGroupItem
+                                value={option.value}
+                                id={`transform-${option.value}`}
+                                aria-label={`Select transformation ${option.label}`}
+                              />
+                              <Label
+                                htmlFor={`transform-${option.value}`}
+                                className="cursor-pointer flex-1 text-right"
+                              >
+                                {option.label}
+                              </Label>
+                            </>
+                          ) : (
+                            <>
+                              <RadioGroupItem
+                                value={option.value}
+                                id={`transform-${option.value}`}
+                                aria-label={`Select transformation ${option.label}`}
+                              />
+                              <Label
+                                htmlFor={`transform-${option.value}`}
+                                className="cursor-pointer flex-1 text-left"
+                              >
+                                {option.label}
+                              </Label>
+                            </>
+                          )}
+                        </div>
+                      ))}
+                    </RadioGroup>
+                    {transformation === "Other" && (
+                      <div className="pt-2">
+                        <Label
+                          htmlFor="otherTransformation"
+                          className={isRTL ? "text-right" : "text-left"}
+                        >
+                          {t("bookingFunnel.step2.otherLabel")}
+                        </Label>
+                        <Input
+                          id="otherTransformation"
+                          value={otherTransformation}
+                          onChange={(e) =>
+                            setOtherTransformation(e.target.value.slice(0, 50))
+                          }
+                          placeholder={t(
+                            "bookingFunnel.step2.otherPlaceholder"
+                          )}
+                          maxLength={50}
+                          className={`mt-1 ${isRTL ? "text-right" : "text-left"}`}
+                          style={{ direction: isRTL ? "rtl" : "ltr" }}
+                          aria-describedby="other-transform-count"
+                        />
+                        <p
+                          id="other-transform-count"
+                          className="text-xs text-muted-foreground mt-1 sr-only"
+                        >
+                          {otherTransformation.length} of 50 characters
+                        </p>
+                        <p
+                          className={`text-xs text-muted-foreground mt-1 ${isRTL ? "text-right" : "text-left"}`}
+                          aria-hidden="true"
+                        >
+                          {otherTransformation.length}/50
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex justify-end pt-4">
+                  <div
+                    className={`flex gap-2 ${
+                      isRTL ? "justify-start flex-row-reverse" : "justify-end"
+                    }`}
+                  >
+                    <Button
+                      variant="outline"
+                      onClick={() => setStep(1)}
+                      className={isRTL ? "" : "mr-auto"}
+                    >
+                      {t("bookingFunnel.step2.back")}
+                    </Button>
                     <Button
                       onClick={handleContinueStep2}
+                      disabled={!canContinueStep2}
                       className="continue-step2"
                     >
-                      Continue
+                      {t("bookingFunnel.step2.continue")}
                     </Button>
                   </div>
                 </motion.div>
@@ -447,35 +625,14 @@ export function BookingFunnel() {
               {step === 3 && (
                 <>
                   <div className="space-y-4">
-                    <div>
-                      <Label className="text-sm font-medium">
-                        Company size
-                      </Label>
-                      <RadioGroup
-                        value={companySize}
-                        onValueChange={setCompanySize}
-                        className="pt-2 space-y-2"
-                      >
-                        {COMPANY_SIZE_OPTIONS.map((option) => (
-                          <div
-                            key={option.value}
-                            className="flex items-center space-x-2"
-                          >
-                            <RadioGroupItem
-                              value={option.value}
-                              id={`company-${option.value}`}
-                              aria-label={`Select company size ${option.label}`}
-                            />
-                            <Label htmlFor={`company-${option.value}`}>
-                              {option.label}
-                            </Label>
-                          </div>
-                        ))}
-                      </RadioGroup>
-                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      {t("bookingFunnel.step3.description")}
+                    </p>
 
                     <div>
-                      <Label className="text-sm font-medium">Timeline</Label>
+                      <Label className={`text-sm font-medium ${isRTL ? "text-right" : "text-left"}`}>
+                        {t("bookingFunnel.step3.timelineLabel")}
+                      </Label>
                       <RadioGroup
                         value={timeline}
                         onValueChange={setTimeline}
@@ -484,40 +641,167 @@ export function BookingFunnel() {
                         {TIMELINE_OPTIONS.map((option) => (
                           <div
                             key={option.value}
-                            className="flex items-center space-x-2"
+                            className="flex items-center w-full p-2 rounded-md hover:bg-muted/50 transition-colors cursor-pointer gap-4"
                           >
-                            <RadioGroupItem
-                              value={option.value}
-                              id={`timeline-${option.value}`}
-                              aria-label={`Select timeline ${option.label}`}
-                            />
-                            <Label htmlFor={`timeline-${option.value}`}>
-                              {option.label}
-                            </Label>
+                            {isRTL ? (
+                              <>
+                                <RadioGroupItem
+                                  value={option.value}
+                                  id={`timeline-${option.value}`}
+                                  aria-label={`Select timeline ${option.label}`}
+                                />
+                                <Label
+                                  htmlFor={`timeline-${option.value}`}
+                                  className="cursor-pointer flex-1 text-right"
+                                >
+                                  {option.label}
+                                </Label>
+                              </>
+                            ) : (
+                              <>
+                                <RadioGroupItem
+                                  value={option.value}
+                                  id={`timeline-${option.value}`}
+                                  aria-label={`Select timeline ${option.label}`}
+                                />
+                                <Label
+                                  htmlFor={`timeline-${option.value}`}
+                                  className="cursor-pointer flex-1 text-left"
+                                >
+                                  {option.label}
+                                </Label>
+                              </>
+                            )}
+                          </div>
+                        ))}
+                      </RadioGroup>
+                    </div>
+
+                    <div>
+                      <Label className={`text-sm font-medium ${isRTL ? "text-right" : "text-left"}`}>
+                        {t("bookingFunnel.step3.budgetLabel")}
+                      </Label>
+                      <RadioGroup
+                        value={budget}
+                        onValueChange={setBudget}
+                        className="pt-2 space-y-2"
+                      >
+                        {BUDGET_OPTIONS.map((option) => (
+                          <div
+                            key={option.value}
+                            className="flex items-center w-full p-2 rounded-md hover:bg-muted/50 transition-colors cursor-pointer gap-4"
+                          >
+                            {isRTL ? (
+                              <>
+                                <RadioGroupItem
+                                  value={option.value}
+                                  id={`budget-${option.value}`}
+                                  aria-label={`Select budget ${option.label}`}
+                                />
+                                <Label
+                                  htmlFor={`budget-${option.value}`}
+                                  className="cursor-pointer flex-1 text-right"
+                                >
+                                  {option.label}
+                                </Label>
+                              </>
+                            ) : (
+                              <>
+                                <RadioGroupItem
+                                  value={option.value}
+                                  id={`budget-${option.value}`}
+                                  aria-label={`Select budget ${option.label}`}
+                                />
+                                <Label
+                                  htmlFor={`budget-${option.value}`}
+                                  className="cursor-pointer flex-1 text-left"
+                                >
+                                  {option.label}
+                                </Label>
+                              </>
+                            )}
                           </div>
                         ))}
                       </RadioGroup>
                     </div>
                   </div>
-                  <div className="flex justify-end space-x-2">
+                  <div
+                    className={`flex gap-2 ${
+                      isRTL ? "justify-start flex-row-reverse" : "justify-end"
+                    }`}
+                  >
                     <Button
                       variant="outline"
                       onClick={() => setStep(2)}
-                      className="mr-auto"
+                      className={isRTL ? "" : "mr-auto"}
                     >
-                      Back
+                      {t("bookingFunnel.step3.back")}
                     </Button>
                     <Button
                       onClick={handleContinueStep3}
-                      disabled={!canContinueStep3 || isSubmitting}
+                      disabled={!canContinueStep3}
                       aria-label="Continue"
                     >
-                      {isSubmitting ? "Sending..." : "Continue"}
+                      {t("bookingFunnel.step3.continue")}
                     </Button>
                   </div>
                 </>
               )}
               {step === 4 && (
+                <>
+                  <div className="space-y-4">
+                    <p className="text-sm text-muted-foreground">
+                      {t("bookingFunnel.step4.description")}
+                    </p>
+                    <div>
+                      <Label
+                        htmlFor="gameChanger"
+                        className={`text-sm font-medium ${isRTL ? "text-right" : "text-left"}`}
+                      >
+                        {t("bookingFunnel.step4.label")}
+                      </Label>
+                      <textarea
+                        id="gameChanger"
+                        value={gameChanger}
+                        onChange={(e) => setGameChanger(e.target.value)}
+                        placeholder={t("bookingFunnel.step4.placeholder")}
+                        className={`mt-2 min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none ${
+                          isRTL ? "text-right" : "text-left"
+                        }`}
+                        style={{ direction: isRTL ? "rtl" : "ltr" }}
+                        maxLength={300}
+                      />
+                      <p className={`text-xs text-muted-foreground mt-1 ${isRTL ? "text-right" : "text-left"}`}>
+                        {gameChanger.length}/300 characters
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    className={`flex gap-2 ${
+                      isRTL ? "justify-start flex-row-reverse" : "justify-end"
+                    }`}
+                  >
+                    <Button
+                      variant="outline"
+                      onClick={() => setStep(3)}
+                      className={isRTL ? "" : "mr-auto"}
+                    >
+                      {t("bookingFunnel.step4.back")}
+                    </Button>
+                    <Button
+                      onClick={handleContinueStep4}
+                      disabled={!canContinueStep4 || isSubmitting}
+                      aria-label="Continue to schedule call"
+                    >
+                      {isSubmitting
+                        ? t("bookingFunnel.step4.submitting")
+                        : t("bookingFunnel.step4.submit")}
+                    </Button>
+                  </div>
+                </>
+              )}
+
+              {step === 5 && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -525,18 +809,17 @@ export function BookingFunnel() {
                 >
                   <div className="space-y-4 text-center">
                     <p className="text-lg font-semibold">
-                      Great! We're redirecting you to Calendly to schedule your
-                      call.
+                      {t("bookingFunnel.step5.message")}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      If the page doesn't open automatically,{" "}
+                      {t("bookingFunnel.step5.fallback")}{" "}
                       <a
                         href={CALENDLY_URL}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-primary underline"
                       >
-                        click here
+                        {t("bookingFunnel.step5.clickHere")}
                       </a>
                       .
                     </p>

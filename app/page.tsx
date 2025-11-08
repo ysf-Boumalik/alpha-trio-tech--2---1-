@@ -24,11 +24,41 @@ const tweets = [
   "1929282761170280832",
   "1925649192325648725",
   "1938964723342680437",
-  "1985105567367708703"
+  "1985105567367708703",
 ];
 
 export default function Home() {
   const { t } = useTranslation();
+
+  const stats = [
+    { num: "50+", label: t("Projects Completed") },
+    { num: "30+", label: t("Happy Clients") },
+    { num: "5+", label: t("Years Experience") },
+    { num: "100%", label: t("Client Satisfaction") },
+  ];
+
+  const services = [
+    {
+      icon: "💻",
+      title: t("IT Solutions"),
+      desc: t("Enterprise IT infrastructure and support"),
+    },
+    {
+      icon: "⚙️",
+      title: t("Automation"),
+      desc: t("Business process automation"),
+    },
+    {
+      icon: "🤖",
+      title: t("AI Solutions"),
+      desc: t("AI-powered business solutions"),
+    },
+    {
+      icon: "📱",
+      title: t("App Development"),
+      desc: t("Custom web and mobile apps"),
+    },
+  ];
 
   return (
     <>
@@ -46,17 +76,15 @@ export default function Home() {
             AlphaTrio Tech
           </h1>
           <p className="text-xl md:text-2xl text-slate-700 dark:text-gray-200 mb-6">
-            {t("Where Deep Tech Meets Human Mindset")}
+            {t("home.hero.title")}
           </p>
           <p className="text-lg text-slate-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
-            {t(
-              "Professional IT solutions, automation, and AI services to transform your business"
-            )}
+            {t("home.hero.subtitle")}
           </p>
 
           <div className="flex gap-4 justify-center flex-wrap">
             <Button className="book-cta bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-lg font-semibold text-white transition shadow-lg hover:shadow-purple-900/70 h-14 hover:cursor-pointer">
-              {t("Book Free Consultation")}
+              {t("home.hero.cta")}
             </Button>
             <Link
               href="/portfolio"
@@ -66,6 +94,56 @@ export default function Home() {
             </Link>
           </div>
         </motion.div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="bg-gray-50 dark:bg-slate-900 py-16 px-4 border-t border-slate-200 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
+          {stats.map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <div className="text-5xl font-extrabold text-purple-500 mb-2">
+                {stat.num}
+              </div>
+              <p className="text-slate-600 dark:text-gray-400">{stat.label}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section className="py-20 px-4 bg-white dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <h2 className="text-4xl font-bold text-center mb-12 text-slate-900 dark:text-white">
+            {t("Our Services")}
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {services.map((service, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-br from-white to-gray-50 dark:from-slate-800 dark:to-slate-900 backdrop-blur-md p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl shadow-gray-700/50 dark:shadow-black/60 hover:shadow-2xl hover:shadow-purple-500/30 ring-1 ring-white/50 dark:ring-slate-600/30 transition-all duration-400 hover:-translate-y-2 hover:scale-105"
+              >
+                <div className="text-5xl mb-4">{service.icon}</div>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                  {service.title}
+                </h3>
+                <p className="text-slate-600 dark:text-gray-400">
+                  {service.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Motivation Section */}
@@ -80,7 +158,9 @@ export default function Home() {
             </p>
           </div>
           <InfiniteMovingCards
-            items={tweets.map(id => <TweetCard key={id} id={id} />)}
+            items={tweets.map((id) => (
+              <TweetCard key={id} id={id} />
+            ))}
             direction="left"
             speed="slow"
             pauseOnHover={true}
@@ -98,14 +178,10 @@ export default function Home() {
           viewport={{ once: true }}
           className="relative max-w-4xl mx-auto text-center text-white z-10"
         >
-          <h2 className="text-4xl font-bold mb-6">
-            {t("Ready to Transform Your Business?")}
-          </h2>
-          <p className="text-lg mb-8 opacity-90">
-            {t("Let's discuss how we can help you achieve your goals")}
-          </p>
+          <h2 className="text-4xl font-bold mb-6">{t("home.cta.title")}</h2>
+          <p className="text-lg mb-8 opacity-90">{t("home.cta.description")}</p>
           <Button className="book-cta bg-white text-purple-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition shadow-lg h-12 hover:cursor-pointer">
-            {t("Schedule Your Free Consultation")}
+            {t("home.cta.button")}
           </Button>
         </motion.div>
       </section>

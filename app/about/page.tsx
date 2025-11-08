@@ -48,14 +48,10 @@ export default function About() {
               {t("Our Story")}
             </h2>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
-              {t(
-                "AlphaTrio Tech was founded with a mission to bridge the gap between cutting-edge technology and practical business solutions. We believe that technology should empower businesses, not complicate them."
-              )}
+              {t("company.story.paragraph1")}
             </p>
             <p className="text-gray-700 dark:text-gray-300">
-              {t(
-                "Over the years, we've helped dozens of companies transform their operations through innovative IT solutions, automation, and AI-powered systems. Our team is dedicated to delivering excellence in every project."
-              )}
+              {t("company.story.paragraph2")}
             </p>
           </div>
 
