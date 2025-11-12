@@ -26,8 +26,7 @@ export default function About() {
       name: "Houcine Razzouki",
       role: t("DevOps Engineer"),
       bio: t("Cloud infrastructure and automation expert"),
-      image:
-        "https://elhoussinrazouki.vercel.app/_next/image?url=https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocLwLdSfciBxubaHezLLfg6h4hhB5uFz8HF3BFTCFctCJt_7gMVm%3Ds576-c-no&w=1080&q=75",
+      image:"hossinphoto.png",
     },
   ];
 
