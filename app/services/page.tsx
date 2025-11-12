@@ -1,88 +1,94 @@
-"use client"
+"use client";
 
-import Navigation from "@/components/navigation"
-import Footer from "@/components/footer"
-import { motion } from "framer-motion"
-import { useTranslation } from "@/lib/useTranslation"
-import { useLanguage } from "@/components/language-provider"
+import Navigation from "@/components/navigation";
+import Footer from "@/components/footer";
+import { motion } from "framer-motion";
+import { useTranslation } from "@/lib/useTranslation";
 
 export default function Services() {
-  const { language } = useLanguage()
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const services = [
     {
       icon: "💻",
       title: t("IT Solutions"),
-      description: t("Enterprise IT infrastructure, cloud solutions, and technical support"),
+      description: t(
+        "Enterprise IT infrastructure, cloud solutions, and technical support"
+      ),
       features: [
         t("Infrastructure Setup"),
-        t("Cloud Migration"), 
+        t("Cloud Migration"),
         t("24/7 Support"),
-        t("Security Audits")
+        t("Security Audits"),
       ],
       gradient: "from-purple-500/10 to-blue-500/10",
     },
     {
       icon: "⚙️",
       title: t("Automation"),
-      description: t("Business process automation to increase efficiency and reduce costs"),
+      description: t(
+        "Business process automation to increase efficiency and reduce costs"
+      ),
       features: [
         t("RPA Solutions"),
         t("Workflow Automation"),
         t("Integration Services"),
-        t("Process Optimization")
+        t("Process Optimization"),
       ],
       gradient: "from-cyan-500/10 to-emerald-500/10",
     },
     {
       icon: "🤖",
       title: t("AI Solutions"),
-      description: t("Artificial intelligence and machine learning solutions for your business"),
+      description: t(
+        "Artificial intelligence and machine learning solutions for your business"
+      ),
       features: [
         t("AI Consulting"),
         t("ML Models"),
         t("Data Analytics"),
-        t("Predictive Analytics")
+        t("Predictive Analytics"),
       ],
       gradient: "from-pink-500/10 to-purple-500/10",
     },
     {
       icon: "📱",
       title: t("App Development"),
-      description: t("Custom web and mobile applications tailored to your needs"),
+      description: t(
+        "Custom web and mobile applications tailored to your needs"
+      ),
       features: [
         t("Web Apps"),
         t("Mobile Apps"),
         t("API Development"),
-        t("Maintenance & Support")
+        t("Maintenance & Support"),
       ],
       gradient: "from-pink-500/10 to-purple-500/10",
     },
-  ]
+  ];
 
   const processSteps = [
-    { 
-      num: "01", 
-      title: t("Consultation"), 
-      desc: t("Understand your needs and goals") 
+    {
+      num: "01",
+      title: t("Consultation"),
+      desc: t("Understand your needs and goals"),
     },
-    { 
-      num: "02", 
-      title: t("Planning"), 
-      desc: t("Create a detailed project plan") 
+    {
+      num: "02",
+      title: t("Planning"),
+      desc: t("Create a detailed project plan"),
     },
-    { 
-      num: "03", 
-      title: t("Development"), 
-      desc: t("Build and implement solutions") 
+    {
+      num: "03",
+      title: t("Development"),
+      desc: t("Build and implement solutions"),
     },
-    { 
-      num: "04", 
-      title: t("Support"), 
-      desc: t("Ongoing maintenance and support") 
+    {
+      num: "04",
+      title: t("Support"),
+      desc: t("Ongoing maintenance and support"),
     },
-  ]
+  ];
 
   return (
     <>
@@ -101,7 +107,9 @@ export default function Services() {
               {t("Our Services")}
             </h1>
             <p className="text-gray-700 dark:text-gray-300 text-lg max-w-2xl mx-auto">
-              {t("Comprehensive technology solutions to drive your business forward")}
+              {t(
+                "Comprehensive technology solutions to drive your business forward"
+              )}
             </p>
           </motion.div>
 
@@ -116,13 +124,15 @@ export default function Services() {
                 viewport={{ once: true }}
                 className={`relative bg-gradient-to-br ${service.gradient} p-[1px] rounded-2xl group`}
               >
-                <div className="flex flex-col justify-between w-full h-full 
+                <div
+                  className="flex flex-col justify-between w-full h-full 
                     bg-gradient-to-br from-white to-gray-50 dark:from-slate-800 dark:to-slate-900 
                     backdrop-blur-md p-6 rounded-2xl border border-slate-200 dark:border-slate-700 
                     shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.35)]
                     hover:shadow-[0_12px_40px_rgb(0,188,212,0.25)] dark:hover:shadow-[0_12px_40px_rgba(0,188,212,0.35)]
                     hover:border-[#00BCD4]/40 ring-1 ring-white/50 dark:ring-slate-600/30 
-                    transition-all duration-400 hover:-translate-y-2 hover:scale-[1.03] min-h-[420px] shadow-2xl shadow-gray-700/50 dark:shadow-black/60 hover:shadow-2xl hover:shadow-purple-500/30 ring-1 ring-white/50 dark:ring-slate-600/30 transition-all duration-400 hover:-translate-y-2 hover:scale-105">
+                    transition-all duration-400 hover:-translate-y-2 hover:scale-[1.03] min-h-[420px] shadow-2xl shadow-gray-700/50 dark:shadow-black/60 hover:shadow-2xl hover:shadow-purple-500/30 ring-1 ring-white/50 dark:ring-slate-600/30 transition-all duration-400 hover:-translate-y-2 hover:scale-105"
+                >
                   <div className="text-6xl mb-4">{service.icon}</div>
                   <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">
                     {service.title}
@@ -136,7 +146,10 @@ export default function Services() {
                         key={j}
                         className="text-gray-700 dark:text-gray-300 flex items-center gap-2 hover:text-purple-500 transition"
                       >
-                        <span className="text-purple-500 dark:text-purple-400">✓</span> {feature}
+                        <span className="text-purple-500 dark:text-purple-400">
+                          ✓
+                        </span>{" "}
+                        {feature}
                       </li>
                     ))}
                   </ul>
@@ -172,7 +185,9 @@ export default function Services() {
                   <h4 className="font-bold text-lg mb-2 text-gray-900 dark:text-white">
                     {step.title}
                   </h4>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm">{step.desc}</p>
+                  <p className="text-gray-700 dark:text-gray-300 text-sm">
+                    {step.desc}
+                  </p>
                 </motion.div>
               ))}
             </div>
@@ -182,5 +197,5 @@ export default function Services() {
 
       <Footer />
     </>
-  )
+  );
 }

@@ -3,10 +3,8 @@
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import { useTranslation } from "@/lib/useTranslation";
-import { useLanguage } from "@/components/language-provider";
 
 export default function Portfolio() {
-  const { language } = useLanguage();
   const { t } = useTranslation();
 
   const projects = [

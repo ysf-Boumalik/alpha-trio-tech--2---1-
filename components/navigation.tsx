@@ -6,6 +6,7 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useLanguage } from "./language-provider"
 import { useTranslation } from "@/lib/useTranslation"
+import { Button } from "./ui/button"
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
@@ -34,16 +35,15 @@ export default function Navigation() {
 
           {/* ✅ Desktop Menu */}
           <div className="hidden md:flex items-center gap-8 text-gray-800 dark:text-gray-200">
-            <Link href="/" className="hover:text-purple-500 transition">{t("Home")}</Link>
-            <Link href="/portfolio" className="hover:text-purple-500 transition"> {t("Portfolio")}</Link>
-            <Link href="/services" className="hover:text-purple-500 transition">{t("Services")}</Link>
-            <Link href="/about" className="hover:text-purple-500 transition">{t("About")}</Link>
-            <Link
-              href="/bookings"
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition"
+            <Link href="/" className="hover:text-purple-500 transition">{t("nav.home")}</Link>
+            <Link href="/portfolio" className="hover:text-purple-500 transition"> {t("nav.portfolio")}</Link>
+            <Link href="/services" className="hover:text-purple-500 transition">{t("nav.services")}</Link>
+            <Link href="/about" className="hover:text-purple-500 transition">{t("nav.about")}</Link>
+            <Button
+              className="book-cta bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition hover:cursor-pointer"
             >
-              {t("Book Now")}
-            </Link>
+              {t("nav.bookNow")}
+            </Button>
 
             {/* 🌙 Theme Toggle */}
             <button
@@ -84,15 +84,15 @@ export default function Navigation() {
         {/* ✅ Mobile Menu */}
         {isOpen && (
           <div className="md:hidden flex flex-col space-y-2 pb-4 text-gray-800 dark:text-gray-200">
-            <Link href="/" className="hover:text-purple-500 transition py-2">Home</Link>
-            <Link href="/portfolio" className="hover:text-purple-500 transition py-2">Portfolio</Link>
-            <Link href="/services" className="hover:text-purple-500 transition py-2">Services</Link>
-            <Link href="/about" className="hover:text-purple-500 transition py-2">About</Link>
+            <Link href="/" className="hover:text-purple-500 transition py-2">{t("nav.home")}</Link>
+            <Link href="/portfolio" className="hover:text-purple-500 transition py-2">{t("nav.portfolio")}</Link>
+            <Link href="/services" className="hover:text-purple-500 transition py-2">{t("nav.services")}</Link>
+            <Link href="/about" className="hover:text-purple-500 transition py-2">{t("nav.about")}</Link>
             <Link
               href="/bookings"
               className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-center transition"
             >
-              Book Now
+              {t("nav.bookNow")}
             </Link>
 
             {/* Theme & Language buttons */}
