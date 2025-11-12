@@ -85,19 +85,19 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm mb-4 md:mb-0 mx-auto">
-            © 2024 AlphaTrio Tech. {t("All rights reserved")}.
+            © 2025 AlphaTrio Tech. {t("All rights reserved")}.
           </p>
           <div className="flex space-x-4">
             <a href="#" className="text-gray-400 hover:text-purple-400 transition">
-              <span className="sr-only">Facebook</span>
+              <span className="sr-only">{t("Facebook")}</span>
               {/* Facebook Icon */}
             </a>
             <a href="#" className="text-gray-400 hover:text-purple-400 transition">
-              <span className="sr-only">Twitter</span>
+              <span className="sr-only">{t("Twitter")}</span>
               {/* Twitter Icon */}
             </a>
             <a href="#" className="text-gray-400 hover:text-purple-400 transition">
-              <span className="sr-only">LinkedIn</span>
+              <span className="sr-only">{t("LinkedIn")}</span>
               {/* LinkedIn Icon */}
             </a>
           </div>
