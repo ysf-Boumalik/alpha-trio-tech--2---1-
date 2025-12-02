@@ -8,7 +8,7 @@ import { useTranslation } from "@/lib/useTranslation";
 import { Button } from "@/components/ui/button";
 import { TweetCard } from "@/components/ui/tweet-card";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
-import LiquidChrome from "@/components/LiquidChrome";
+import { trackButtonClick, trackLinkClick } from "@/lib/analytics";
 import { Monitor, Cog, Sparkles, Smartphone } from "lucide-react";
 import ParticlesBackground from "@/components/ParticlesBackground";
 
@@ -18,7 +18,6 @@ const tweets = [
   "1638226410065268737",
   "1986514377470845007",
   "1882993091784880557",
-  "1415752955152666627",
   "1725656554878492779",
   "1917711292325933358",
   "1890910896903319896",
@@ -88,12 +87,17 @@ export default function Home() {
           </p>
 
           <div className="flex gap-4 justify-center flex-wrap">
-            <Button className="book-cta bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-lg font-semibold text-white transition shadow-lg hover:shadow-purple-900/70 h-14 hover:cursor-pointer">
+            <Button
+              className="book-cta bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-lg font-semibold text-white transition shadow-lg hover:shadow-purple-900/70 h-14 hover:cursor-pointer"
+              onClick={() =>
+                trackButtonClick("Book Consultation", "hero_section", {
+                  button_text: t("home.hero.cta"),
+                })
+              }
+            >
               {t("home.hero.cta")}
             </Button>
-
           </div>
-
         </motion.div>
       </section>
 
@@ -170,7 +174,6 @@ export default function Home() {
             pauseOnHover={true}
           />
         </div>
-
       </section>
 
       {/* CTA Section */}
@@ -185,17 +188,18 @@ export default function Home() {
         >
           <h2 className="text-4xl font-bold mb-6">{t("home.cta.title")}</h2>
           <p className="text-lg mb-8 opacity-90">{t("home.cta.description")}</p>
-          <Button className="book-cta bg-white text-purple-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition shadow-lg h-12 hover:cursor-pointer">
+          <Button
+            className="book-cta bg-white text-purple-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition shadow-lg h-12 hover:cursor-pointer"
+            onClick={() =>
+              trackButtonClick("Get Started", "cta_section", {
+                button_text: t("home.cta.button"),
+              })
+            }
+          >
             {t("home.cta.button")}
           </Button>
         </motion.div>
       </section>
-
-      <div style={{ width: '100%', height: '0px', position: 'relative' }}>
-
-        {/* <LiquidChrome baseColor={[0.3, 0.1, 0.5]} speed={0.3} amplitude={0.4} /> */}
-
-      </div>
 
       <Footer />
     </>
