@@ -11,33 +11,33 @@ export default function Footer() {
   const { t } = useTranslation()
 
   return (
-    <footer className="bg-slate-900 border-t border-slate-800 py-12">
+    <footer className="bg-muted/50 border-t border-border py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
             <h3 className="font-bold text-lg mb-4">AlphaTrio Tech</h3>
-            <p className="text-gray-400 text-sm font-bold text-lg mb-4">{t("Where Deep Tech Meets Human Mindset")}</p>
+            <p className="text-muted-foreground text-sm font-bold text-lg mb-4">{t("Where Deep Tech Meets Human Mindset")}</p>
             {/* Social Media */}
           <div className="flex space-x-4">
             <a
               href="https://www.instagram.com/alphatrio_tech/?hl=en"
               target="_blank"
-              className="text-gray-400 hover:text-pink-500 transition text-xl"
+              className="text-muted-foreground hover:text-pink-500 transition text-xl"
             >
               <FaInstagram />
             </a>
             <a
               href="https://www.tiktok.com/?lang=fr"
               target="_blank"
-              className="text-gray-400 hover:text-white transition text-xl"
+              className="text-muted-foreground hover:text-white transition text-xl"
             >
               <SiTiktok />
             </a>
              <a
               href="https://www.linkedin.com/in/alphatrio-tech-66357838b/"
               target="_blank"
-              className="text-gray-400 hover:text-blue-500 transition text-xl"
+              className="text-muted-foreground hover:text-blue-500 transition text-xl"
             >
               <FaLinkedin />
             </a>
@@ -48,7 +48,7 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h4 className="font-semibold mb-4">{t("Quick Links")}</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <a
                   href="/"
@@ -91,7 +91,7 @@ export default function Footer() {
           {/* Services */}
           <div>
             <h4 className="font-semibold mb-4">{t("Services")}</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <a
                   href="/services#it"
@@ -134,7 +134,7 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h4 className="font-semibold mb-4">{t("Contact")}</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-muted-foreground">
               <li>{t("Email")}: contact@alphatriotech.com</li>
               <li>{t("Phone")}: +212 767879005</li>
               <li>{t("Address")}: Rabat, Morocco</li>
@@ -143,14 +143,14 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0 mx-auto">
+        <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center">
+          <p className="text-muted-foreground text-sm mb-4 md:mb-0 mx-auto">
             © 2025 AlphaTrio Tech. {t("All rights reserved")}.
           </p>
           <div className="flex space-x-4">
             <a
               href="#"
-              className="text-gray-400 hover:text-purple-400 transition"
+              className="text-muted-foreground hover:text-purple-400 transition"
               onClick={() => trackSocialInteraction("facebook", "click")}
             >
               <span className="sr-only">{t("Facebook")}</span>
@@ -158,7 +158,7 @@ export default function Footer() {
             </a>
             <a
               href="#"
-              className="text-gray-400 hover:text-purple-400 transition"
+              className="text-muted-foreground hover:text-purple-400 transition"
               onClick={() => trackSocialInteraction("twitter", "click")}
             >
               <span className="sr-only">{t("Twitter")}</span>
@@ -166,7 +166,7 @@ export default function Footer() {
             </a>
             <a
               href="#"
-              className="text-gray-400 hover:text-purple-400 transition"
+              className="text-muted-foreground hover:text-purple-400 transition"
               onClick={() => trackSocialInteraction("linkedin", "click")}
             >
               <span className="sr-only">{t("LinkedIn")}</span>

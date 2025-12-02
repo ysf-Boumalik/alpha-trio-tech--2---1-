@@ -25,8 +25,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-
       <body
+        suppressHydrationWarning
         className={`font-sans antialiased bg-white text-slate-900 dark:bg-slate-950 dark:text-white transition-colors duration-200`}
       >
         <Script

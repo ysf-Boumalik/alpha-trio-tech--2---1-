@@ -1,57 +1,65 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { useState, useEffect } from "react"
-import { Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
-import { useLanguage } from "./language-provider"
-import { useTranslation } from "@/lib/useTranslation"
-import { Button } from "./ui/button"
-import { trackLinkClick, trackButtonClick, trackThemeChange, trackLanguageChange } from "@/lib/analytics"
-import { usePathname } from "next/navigation"
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useLanguage } from "./language-provider";
+import { useTranslation } from "@/lib/useTranslation";
+import { Button } from "./ui/button";
+import {
+  trackLinkClick,
+  trackButtonClick,
+  trackThemeChange,
+  trackLanguageChange,
+} from "@/lib/analytics";
+import { usePathname } from "next/navigation";
 
 export default function Navigation() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
-  const { theme, setTheme } = useTheme()
-  const { language, toggleLanguage } = useLanguage()
+  const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const { language, toggleLanguage } = useLanguage();
 
   const handleLanguageToggle = () => {
     toggleLanguage();
-  }
+  };
 
   // Track language changes
   useEffect(() => {
     trackLanguageChange(language);
   }, [language]);
-  const { t } = useTranslation()
-  const pathname = usePathname()
+  const { t } = useTranslation();
+  const pathname = usePathname();
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   // Active class helper
   const isActive = (path: string) =>
     pathname === path
       ? "text-purple-600 dark:text-purple-400 font-bold"
-      : "text-gray-800 dark:text-gray-200"
+      : "text-gray-800 dark:text-gray-200";
 
   const toggleTheme = () => {
     // theme can be 'system' | 'light' | 'dark'
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
     trackThemeChange(newTheme);
-  }
+  };
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-md border-b border-slate-700 dark:border-slate-800 bg-white/70 dark:bg-slate-900/90 transition-colors duration-300">
+    <nav className="sticky top-0 z-50 backdrop-blur-md border-b border-border bg-white/70 dark:bg-slate-900/90 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <img src="/images/alphatrio.png" alt="logo" className="h-12 w-12 rounded-full" />
+            <img
+              src="/images/alphatrio.png"
+              alt="logo"
+              className="h-12 w-12 rounded-full"
+            />
             <span className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-[#00BCD4] to-[#005B99] bg-clip-text text-transparent">
               AlphaTrio Tech
             </span>
@@ -61,35 +69,51 @@ export default function Navigation() {
           <div className="hidden md:flex items-center gap-8 text-gray-800 dark:text-gray-200">
             <Link
               href="/"
-              className="hover:text-purple-500 transition"
+              className={`${isActive("/")} hover:text-purple-500 transition`}
               onClick={() => trackLinkClick(t("nav.home"), "/", "internal")}
             >
               {t("nav.home")}
             </Link>
             <Link
               href="/portfolio"
-              className="hover:text-purple-500 transition"
-              onClick={() => trackLinkClick(t("nav.portfolio"), "/portfolio", "internal")}
+              className={`${isActive(
+                "/portfolio"
+              )} hover:text-purple-500 transition`}
+              onClick={() =>
+                trackLinkClick(t("nav.portfolio"), "/portfolio", "internal")
+              }
             >
               {t("nav.portfolio")}
             </Link>
             <Link
               href="/services"
-              className="hover:text-purple-500 transition"
-              onClick={() => trackLinkClick(t("nav.services"), "/services", "internal")}
+              className={`${isActive(
+                "/services"
+              )} hover:text-purple-500 transition`}
+              onClick={() =>
+                trackLinkClick(t("nav.services"), "/services", "internal")
+              }
             >
               {t("nav.services")}
             </Link>
             <Link
               href="/about"
-              className="hover:text-purple-500 transition"
-              onClick={() => trackLinkClick(t("nav.about"), "/about", "internal")}
+              className={`${isActive(
+                "/about"
+              )} hover:text-purple-500 transition`}
+              onClick={() =>
+                trackLinkClick(t("nav.about"), "/about", "internal")
+              }
             >
               {t("nav.about")}
             </Link>
             <Button
               className="book-cta bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition hover:cursor-pointer"
-              onClick={() => trackButtonClick("Book Now", "navigation", { button_text: t("nav.bookNow") })}
+              onClick={() =>
+                trackButtonClick("Book Now", "navigation", {
+                  button_text: t("nav.bookNow"),
+                })
+              }
             >
               {t("nav.bookNow")}
             </Button>
@@ -98,7 +122,7 @@ export default function Navigation() {
             {mounted && (
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-purple-100 dark:hover:bg-slate-800 transition"
+                className="p-2 rounded-lg border border-border hover:bg-purple-100 dark:hover:bg-slate-800 transition"
               >
                 {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
               </button>
@@ -107,7 +131,7 @@ export default function Navigation() {
             {/* Language Toggle */}
             <button
               onClick={handleLanguageToggle}
-              className="flex items-center gap-1 p-2 rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-purple-100 dark:hover:bg-slate-800 transition"
+              className="flex items-center gap-1 p-2 rounded-lg border border-border hover:bg-purple-100 dark:hover:bg-slate-800 transition"
             >
               <span className="text-sm font-semibold">{language}</span>
             </button>
@@ -124,7 +148,12 @@ export default function Navigation() {
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           </button>
         </div>
@@ -134,46 +163,64 @@ export default function Navigation() {
           <div className="md:hidden flex flex-col space-y-2 pb-4 text-gray-800 dark:text-gray-200">
             <Link
               href="/"
-              className="hover:text-purple-500 transition py-2"
+              className={`${isActive(
+                "/"
+              )} hover:text-purple-500 transition py-2`}
               onClick={() => trackLinkClick(t("nav.home"), "/", "internal")}
             >
               {t("nav.home")}
             </Link>
             <Link
               href="/portfolio"
-              className="hover:text-purple-500 transition py-2"
-              onClick={() => trackLinkClick(t("nav.portfolio"), "/portfolio", "internal")}
+              className={`${isActive(
+                "/portfolio"
+              )} hover:text-purple-500 transition py-2`}
+              onClick={() =>
+                trackLinkClick(t("nav.portfolio"), "/portfolio", "internal")
+              }
             >
               {t("nav.portfolio")}
             </Link>
             <Link
               href="/services"
-              className="hover:text-purple-500 transition py-2"
-              onClick={() => trackLinkClick(t("nav.services"), "/services", "internal")}
+              className={`${isActive(
+                "/services"
+              )} hover:text-purple-500 transition py-2`}
+              onClick={() =>
+                trackLinkClick(t("nav.services"), "/services", "internal")
+              }
             >
               {t("nav.services")}
             </Link>
             <Link
               href="/about"
-              className="hover:text-purple-500 transition py-2"
-              onClick={() => trackLinkClick(t("nav.about"), "/about", "internal")}
+              className={`${isActive(
+                "/about"
+              )} hover:text-purple-500 transition py-2`}
+              onClick={() =>
+                trackLinkClick(t("nav.about"), "/about", "internal")
+              }
             >
               {t("nav.about")}
             </Link>
-            <Link
-              href="/bookings"
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-center transition"
-              onClick={() => trackButtonClick("Book Now", "mobile_navigation", { button_text: t("nav.bookNow") })}
+            <Button
+              className="book-cta bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-center transition w-full"
+              onClick={() => {
+                setIsOpen(false);
+                trackButtonClick("Book Now", "mobile_navigation", {
+                  button_text: t("nav.bookNow"),
+                });
+              }}
             >
               {t("nav.bookNow")}
-            </Link>
+            </Button>
 
             {/* Theme + Language */}
             <div className="flex items-center justify-center gap-4 pt-4">
               {mounted && (
                 <button
                   onClick={toggleTheme}
-                  className="p-2 rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-purple-100 dark:hover:bg-slate-800 transition"
+                  className="p-2 rounded-lg border border-border hover:bg-purple-100 dark:hover:bg-slate-800 transition"
                 >
                   {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
                 </button>
@@ -181,7 +228,7 @@ export default function Navigation() {
 
               <button
                 onClick={handleLanguageToggle}
-                className="flex items-center gap-1 p-2 rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-purple-100 dark:hover:bg-slate-800 transition"
+                className="flex items-center gap-1 p-2 rounded-lg border border-border hover:bg-purple-100 dark:hover:bg-slate-800 transition"
               >
                 <span className="text-sm font-semibold">{language}</span>
               </button>
@@ -190,5 +237,5 @@ export default function Navigation() {
         )}
       </div>
     </nav>
-  )
+  );
 }
