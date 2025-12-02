@@ -10,6 +10,7 @@ import { TweetCard } from "@/components/ui/tweet-card";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import { trackButtonClick, trackLinkClick } from "@/lib/analytics";
 import { Monitor, Cog, Sparkles, Smartphone } from "lucide-react";
+import ParticlesBackground from "@/components/ParticlesBackground";
 
 const tweets = [
   "1884066338739830835",
@@ -66,8 +67,9 @@ export default function Home() {
       <Navigation />
 
       {/* Hero Section */}
-      
-      <section className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 px-4">
+
+      <section className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 px-4 relative overflow-hidden">
+        <ParticlesBackground />
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -95,22 +97,12 @@ export default function Home() {
             >
               {t("home.hero.cta")}
             </Button>
-            <Link
-              href="/portfolio"
-              className="border border-purple-500 text-slate-900 dark:text-white hover:bg-purple-500/10 px-8 py-3 rounded-lg font-semibold transition content-center"
-              onClick={() =>
-                trackLinkClick(t("View Portfolio"), "/portfolio", "internal")
-              }
-            >
-              {t("View Portfolio")}
-            </Link>
           </div>
-          
         </motion.div>
       </section>
 
       {/* Stats Section */}
-      <section className="bg-gray-50 dark:bg-slate-900 py-16 px-4 border-t border-slate-200 dark:border-slate-800">
+      <section className="py-16 px-4 border-t border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
           {stats.map((stat, i) => (
             <motion.div
@@ -131,7 +123,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section className="py-20 px-4 bg-white dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative overflow-hidden">
+      <section className="py-20 px-4 relative overflow-hidden">
         <div className="max-w-7xl mx-auto relative z-10">
           <h2 className="text-4xl font-bold text-center mb-12 text-slate-900 dark:text-white">
             {t("Our Services")}
@@ -163,7 +155,7 @@ export default function Home() {
       </section>
 
       {/* Motivation Section */}
-      <section className="py-20 px-4 bg-white dark:bg-slate-900">
+      <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center space-y-6 mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -182,7 +174,6 @@ export default function Home() {
             pauseOnHover={true}
           />
         </div>
-        
       </section>
 
       {/* CTA Section */}

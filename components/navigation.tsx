@@ -74,26 +74,10 @@ export default function Navigation() {
             >
               {t("nav.home")}
             </Link>
-            <Link
-              href="/portfolio"
-              className={`${isActive(
-                "/portfolio"
-              )} hover:text-purple-500 transition`}
-              onClick={() =>
-                trackLinkClick(t("nav.portfolio"), "/portfolio", "internal")
-              }
-            >
-              {t("nav.portfolio")}
-            </Link>
-            <Link
-              href="/services"
-              className={`${isActive(
-                "/services"
-              )} hover:text-purple-500 transition`}
-              onClick={() =>
-                trackLinkClick(t("nav.services"), "/services", "internal")
-              }
-            >
+
+
+
+            <Link href="/services" className={`${isActive("/services")} hover:text-purple-500 transition`}>
               {t("nav.services")}
             </Link>
             <Link
@@ -170,26 +154,10 @@ export default function Navigation() {
             >
               {t("nav.home")}
             </Link>
-            <Link
-              href="/portfolio"
-              className={`${isActive(
-                "/portfolio"
-              )} hover:text-purple-500 transition py-2`}
-              onClick={() =>
-                trackLinkClick(t("nav.portfolio"), "/portfolio", "internal")
-              }
-            >
-              {t("nav.portfolio")}
-            </Link>
-            <Link
-              href="/services"
-              className={`${isActive(
-                "/services"
-              )} hover:text-purple-500 transition py-2`}
-              onClick={() =>
-                trackLinkClick(t("nav.services"), "/services", "internal")
-              }
-            >
+
+
+
+            <Link href="/services" className={`${isActive("/services")} hover:text-purple-500 transition py-2`}>
               {t("nav.services")}
             </Link>
             <Link

@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useTranslation } from "@/lib/useTranslation"
-import { useLanguage } from "@/components/language-provider"
-import { trackLinkClick, trackSocialInteraction } from "@/lib/analytics"
-import { FaInstagram, FaLinkedin } from "react-icons/fa"
-import { SiTiktok } from "react-icons/si"
+import { useTranslation } from "@/lib/useTranslation";
+import { useLanguage } from "@/components/language-provider";
+import { trackLinkClick, trackSocialInteraction } from "@/lib/analytics";
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
+import { SiTiktok } from "react-icons/si";
 
 export default function Footer() {
-  const { language } = useLanguage()
-  const { t } = useTranslation()
+  const { language } = useLanguage();
+  const { t } = useTranslation();
 
   return (
     <footer className="bg-muted/50 border-t border-border py-12">
@@ -17,33 +17,34 @@ export default function Footer() {
           {/* Company Info */}
           <div>
             <h3 className="font-bold text-lg mb-4">AlphaTrio Tech</h3>
-            <p className="text-muted-foreground text-sm font-bold text-lg mb-4">{t("Where Deep Tech Meets Human Mindset")}</p>
+            <p className="text-muted-foreground text-sm font-bold text-lg mb-4">
+              {t("Where Deep Tech Meets Human Mindset")}
+            </p>
             {/* Social Media */}
-          <div className="flex space-x-4">
-            <a
-              href="https://www.instagram.com/alphatrio_tech/?hl=en"
-              target="_blank"
-              className="text-muted-foreground hover:text-pink-500 transition text-xl"
-            >
-              <FaInstagram />
-            </a>
-            <a
-              href="https://www.tiktok.com/?lang=fr"
-              target="_blank"
-              className="text-muted-foreground hover:text-white transition text-xl"
-            >
-              <SiTiktok />
-            </a>
-             <a
-              href="https://www.linkedin.com/in/alphatrio-tech-66357838b/"
-              target="_blank"
-              className="text-muted-foreground hover:text-blue-500 transition text-xl"
-            >
-              <FaLinkedin />
-            </a>
+            <div className="flex space-x-4">
+              <a
+                href="https://www.instagram.com/alphatrio_tech/?hl=en"
+                target="_blank"
+                className="text-gray-400 hover:text-pink-500 transition text-xl"
+              >
+                <FaInstagram />
+              </a>
+              <a
+                href="https://www.tiktok.com/?lang=fr"
+                target="_blank"
+                className="text-gray-400 hover:text-white transition text-xl"
+              >
+                <SiTiktok />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/alphatrio-tech-66357838b/"
+                target="_blank"
+                className="text-gray-400 hover:text-blue-500 transition text-xl"
+              >
+                <FaLinkedin />
+              </a>
+            </div>
           </div>
-          </div>
-          
 
           {/* Quick Links */}
           <div>
@@ -60,18 +61,8 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/portfolio"
-                  className="hover:text-purple-400 transition"
-                  onClick={() => trackLinkClick(t("Portfolio"), "/portfolio", "internal")}
-                >
-                  {t("Portfolio")}
-                </a>
-              </li>
-              <li>
-                <a
                   href="/services"
                   className="hover:text-purple-400 transition"
-                  onClick={() => trackLinkClick(t("Services"), "/services", "internal")}
                 >
                   {t("Services")}
                 </a>
@@ -80,7 +71,9 @@ export default function Footer() {
                 <a
                   href="/about"
                   className="hover:text-purple-400 transition"
-                  onClick={() => trackLinkClick(t("About"), "/about", "internal")}
+                  onClick={() =>
+                    trackLinkClick(t("About"), "/about", "internal")
+                  }
                 >
                   {t("About")}
                 </a>
@@ -96,7 +89,13 @@ export default function Footer() {
                 <a
                   href="/services#it"
                   className="hover:text-purple-400 transition"
-                  onClick={() => trackLinkClick(t("IT Solutions"), "/services#it", "internal")}
+                  onClick={() =>
+                    trackLinkClick(
+                      t("IT Solutions"),
+                      "/services#it",
+                      "internal"
+                    )
+                  }
                 >
                   {t("IT Solutions")}
                 </a>
@@ -105,7 +104,13 @@ export default function Footer() {
                 <a
                   href="/services#automation"
                   className="hover:text-purple-400 transition"
-                  onClick={() => trackLinkClick(t("Automation"), "/services#automation", "internal")}
+                  onClick={() =>
+                    trackLinkClick(
+                      t("Automation"),
+                      "/services#automation",
+                      "internal"
+                    )
+                  }
                 >
                   {t("Automation")}
                 </a>
@@ -114,7 +119,13 @@ export default function Footer() {
                 <a
                   href="/services#ai"
                   className="hover:text-purple-400 transition"
-                  onClick={() => trackLinkClick(t("AI Solutions"), "/services#ai", "internal")}
+                  onClick={() =>
+                    trackLinkClick(
+                      t("AI Solutions"),
+                      "/services#ai",
+                      "internal"
+                    )
+                  }
                 >
                   {t("AI Solutions")}
                 </a>
@@ -123,7 +134,13 @@ export default function Footer() {
                 <a
                   href="/services#apps"
                   className="hover:text-purple-400 transition"
-                  onClick={() => trackLinkClick(t("App Development"), "/services#apps", "internal")}
+                  onClick={() =>
+                    trackLinkClick(
+                      t("App Development"),
+                      "/services#apps",
+                      "internal"
+                    )
+                  }
                 >
                   {t("App Development")}
                 </a>
@@ -147,35 +164,8 @@ export default function Footer() {
           <p className="text-muted-foreground text-sm mb-4 md:mb-0 mx-auto">
             © 2025 AlphaTrio Tech. {t("All rights reserved")}.
           </p>
-          <div className="flex space-x-4">
-            <a
-              href="#"
-              className="text-muted-foreground hover:text-purple-400 transition"
-              onClick={() => trackSocialInteraction("facebook", "click")}
-            >
-              <span className="sr-only">{t("Facebook")}</span>
-              {/* Facebook Icon */}
-            </a>
-            <a
-              href="#"
-              className="text-muted-foreground hover:text-purple-400 transition"
-              onClick={() => trackSocialInteraction("twitter", "click")}
-            >
-              <span className="sr-only">{t("Twitter")}</span>
-              {/* Twitter Icon */}
-            </a>
-            <a
-              href="#"
-              className="text-muted-foreground hover:text-purple-400 transition"
-              onClick={() => trackSocialInteraction("linkedin", "click")}
-            >
-              <span className="sr-only">{t("LinkedIn")}</span>
-              {/* LinkedIn Icon */}
-            </a>
-          </div>
-          
         </div>
       </div>
     </footer>
-  )
+  );
 }
