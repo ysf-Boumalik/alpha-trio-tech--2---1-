@@ -8,7 +8,7 @@ import { useTranslation } from "@/lib/useTranslation";
 import { Button } from "@/components/ui/button";
 import { TweetCard } from "@/components/ui/tweet-card";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
-import LiquidChrome from "@/components/LiquidChrome";
+import { trackButtonClick, trackLinkClick } from "@/lib/analytics";
 import { Monitor, Cog, Sparkles, Smartphone } from "lucide-react";
 import ParticlesBackground from "@/components/ParticlesBackground";
 
@@ -18,7 +18,6 @@ const tweets = [
   "1638226410065268737",
   "1986514377470845007",
   "1882993091784880557",
-  "1415752955152666627",
   "1725656554878492779",
   "1917711292325933358",
   "1890910896903319896",
@@ -91,9 +90,7 @@ export default function Home() {
             <Button className="book-cta bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-lg font-semibold text-white transition shadow-lg hover:shadow-purple-900/70 h-14 hover:cursor-pointer">
               {t("Book Free Consultation")}
             </Button>
-
           </div>
-
         </motion.div>
       </section>
 
@@ -170,7 +167,6 @@ export default function Home() {
             pauseOnHover={true}
           />
         </div>
-
       </section>
 
       {/* CTA Section */}
@@ -190,12 +186,6 @@ export default function Home() {
           </Button>
         </motion.div>
       </section>
-
-      <div style={{ width: '100%', height: '0px', position: 'relative' }}>
-
-        {/* <LiquidChrome baseColor={[0.3, 0.1, 0.5]} speed={0.3} amplitude={0.4} /> */}
-
-      </div>
 
       <Footer />
     </>
