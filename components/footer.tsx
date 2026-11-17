@@ -97,7 +97,7 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">{t("Contact")}</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>{t("Email")}: contact@alphatriotech.com</li>
-              <li>{t("Phone")}: +212 767879005</li>
+              <li>{t("Phone")}: +212 628941003</li>
               <li>{t("Address")}: Rabat, Morocco</li>
             </ul>
           </div>
