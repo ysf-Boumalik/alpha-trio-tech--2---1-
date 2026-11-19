@@ -6,28 +6,43 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/lib/useTranslation";
 import { Button } from "@/components/ui/button";
-import { TweetCard } from "@/components/ui/tweet-card";
+import { SavedTweetCard } from "@/components/ui/tweet-card";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import LiquidChrome from "@/components/LiquidChrome";
 import { Monitor, Cog, Sparkles, Smartphone } from "lucide-react";
 import ParticlesBackground from "@/components/ParticlesBackground";
 
 const tweets = [
-  "1884066338739830835",
-  "1826866882064122056",
-  "1638226410065268737",
-  "1986514377470845007",
-  "1882993091784880557",
-  "1415752955152666627",
-  "1725656554878492779",
-  "1917711292325933358",
-  "1890910896903319896",
-  "1907275807191339448",
-  "1907422133849911388",
-  "1929282761170280832",
-  "1925649192325648725",
-  "1938964723342680437",
-  "1985105567367708703",
+  {
+    id: "1925649192325648725",
+    name: "Mark Cuban",
+    handle: "mcuban",
+    text: "Experts want their knowledge to be exclusively their own and big companies will do all they can to keep competitive Ai from impacting their business.",
+  },
+  {
+    id: "1938964723342680437",
+    name: "Elon Musk",
+    handle: "elonmusk",
+    text: "I do think AI and robotics will lead to a surplus and massively increased economy in 10 years.",
+  },
+  {
+    id: "1638226410065268737",
+    name: "Bill Gates",
+    handle: "BillGates",
+    text: "Everyone should benefit from artificial intelligence, and not just people in rich countries.",
+  },
+  {
+    id: "1882993091784880557",
+    name: "Marc Andreessen",
+    handle: "pmarca",
+    text: "Consumer cornucopia. Everything you need and want for pennies.",
+  },
+  {
+    id: "1884066338739830835",
+    name: "Sam Altman",
+    handle: "sama",
+    text: "The world is going to want to use a LOT of AI, and really be quite amazed by the next gen models coming.",
+  },
 ];
 
 export default function Home() {
@@ -162,8 +177,8 @@ export default function Home() {
             </p>
           </div>
           <InfiniteMovingCards
-            items={tweets.map((id) => (
-              <TweetCard key={id} id={id} />
+            items={tweets.map((tweet) => (
+              <SavedTweetCard key={tweet.id} {...tweet} />
             ))}
             direction="left"
             speed="slow"

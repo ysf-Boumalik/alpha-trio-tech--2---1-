@@ -1,298 +1,407 @@
-"use client";
+"use client"
 
-import { Suspense, useEffect, useState } from "react"
-import { enrichTweet, type EnrichedTweet, type TweetProps } from "react-tweet"
-import { getTweet, type Tweet } from "react-tweet/api"
-
+import { useEffect, useState } from "react"
+import { enrichTweet, type EnrichedTweet } from "react-tweet"
+import type { Tweet } from "react-tweet/api"
 import { cn } from "@/lib/utils"
 
-interface TwitterIconProps {
+type TweetCardProps = {
+  id: string
   className?: string
-  [key: string]: unknown
-}
-const Twitter = ({ className, ...props }: TwitterIconProps) => (
-  <svg
-    stroke="currentColor"
-    fill="currentColor"
-    strokeWidth="0"
-    viewBox="0 0 24 24"
-    height="1em"
-    width="1em"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    {...props}
-  >
-    <g>
-      <path fill="none" d="M0 0h24v24H0z"></path>
-      <path d="M22.162 5.656a8.384 8.384 0 0 1-2.402.658A4.196 4.196 0 0 0 21.6 4c-.82.488-1.719.83-2.656 1.015a4.182 4.182 0 0 0-7.126 3.814 11.874 11.874 0 0 1-8.62-4.37 4.168 4.168 0 0 0-.566 2.103c0 1.45.738 2.731 1.86 3.481a4.168 4.168 0 0 1-1.894-.523v.052a4.185 4.185 0 0 0 3.355 4.101 4.21 4.21 0 0 1-1.89.072A4.185 4.185 0 0 0 7.97 16.65a8.394 8.394 0 0 1-6.191 1.732 11.83 11.83 0 0 0 6.41 1.88c7.693 0 11.9-6.373 11.9-11.9 0-.18-.005-.362-.013-.54a8.496 8.496 0 0 0 2.087-2.165z"></path>
-    </g>
-  </svg>
-)
-
-const Verified = ({ className, ...props }: TwitterIconProps) => (
-  <svg
-    aria-label="Verified Account"
-    viewBox="0 0 24 24"
-    className={className}
-    {...props}
-  >
-    <g fill="currentColor">
-      <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z" />
-    </g>
-  </svg>
-)
-
-export const truncate = (str: string | null, length: number) => {
-  if (!str || str.length <= length) return str
-  return `${str.slice(0, length - 3)}...`
+  onError?: (error: Error) => void
 }
 
-const Skeleton = ({
+type SavedTweetCardProps = {
+  id: string
+  name: string
+  handle: string
+  text: string
+  className?: string
+}
+
+export const SavedTweetCard = ({
+  id,
+  name,
+  handle,
+  text,
   className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => {
+}: SavedTweetCardProps) => {
+  const postUrl = `https://x.com/${handle}/status/${id}`
+  const initials = name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+
   return (
-    <div className={cn("bg-primary/10 rounded-md", className)} {...props} />
+    <article
+      className={cn(
+        "flex h-full w-full min-w-72 max-w-lg flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900",
+        className
+      )}
+    >
+      <div className="flex items-center gap-3">
+        <div
+          aria-hidden="true"
+          className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-purple-100 font-semibold text-purple-700 dark:bg-purple-900 dark:text-purple-200"
+        >
+          {initials}
+          <img
+            src={`https://unavatar.io/twitter/${handle}`}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+            onError={(event) => {
+              event.currentTarget.style.display = "none"
+            }}
+          />
+        </div>
+        <div className="min-w-0">
+          <a
+            href={postUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block truncate font-semibold hover:underline"
+          >
+            {name}
+          </a>
+          <p className="truncate text-sm text-gray-500">@{handle}</p>
+        </div>
+        <a
+          href={postUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`View ${name}'s original post on X`}
+          className="ml-auto shrink-0 font-bold text-sky-500"
+        >
+          X
+        </a>
+      </div>
+
+      <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">
+        {text}
+      </p>
+
+      <a
+        href={postUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-auto text-xs text-gray-500 hover:underline"
+      >
+        View original post
+      </a>
+    </article>
   )
 }
 
 export const TweetSkeleton = ({
   className,
-  ...props
 }: {
   className?: string
-  [key: string]: unknown
 }) => (
   <div
     className={cn(
-      "flex size-full max-h-max min-w-72 flex-col gap-2 rounded-lg border p-4",
+      "flex min-w-72 flex-col gap-3 rounded-lg border p-4",
       className
     )}
-    {...props}
   >
-    <div className="flex flex-row gap-2">
-      <Skeleton className="size-10 shrink-0 rounded-full" />
-      <Skeleton className="h-10 w-full" />
+    <div className="flex items-center gap-3">
+      <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200" />
+      <div className="h-8 flex-1 animate-pulse rounded bg-gray-200" />
     </div>
-    <Skeleton className="h-20 w-full" />
+    <div className="h-24 animate-pulse rounded bg-gray-200" />
   </div>
 )
 
 export const TweetNotFound = ({
+  id,
   className,
-  ...props
 }: {
+  id?: string
   className?: string
-  [key: string]: unknown
 }) => (
   <div
     className={cn(
-      "flex size-full flex-col items-center justify-center gap-2 rounded-lg border p-4",
+      "flex min-w-72 flex-col items-center justify-center gap-3 rounded-lg border p-4",
       className
     )}
-    {...props}
   >
-    <h3>Tweet not found</h3>
-  </div>
-)
-
-export const TweetHeader = ({ tweet }: { tweet: EnrichedTweet }) => (
-  <div className="flex flex-row justify-between tracking-tight">
-    <div className="flex items-center space-x-2">
-      <a href={tweet.user.url} target="_blank" rel="noreferrer">
-        <img
-          title={`Profile picture of ${tweet.user.name}`}
-          alt={tweet.user.screen_name}
-          height={48}
-          width={48}
-          src={tweet.user.profile_image_url_https}
-          className="overflow-hidden rounded-full border border-transparent"
-        />
+    <p className="text-sm text-gray-500">
+      Tweet unavailable
+    </p>
+    {id && (
+      <a
+        href={`https://x.com/i/status/${id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-sm text-blue-500 hover:underline"
+      >
+        View Tweet on X
       </a>
-      <div>
-        <a
-          href={tweet.user.url}
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center font-semibold whitespace-nowrap"
-        >
-          {truncate(tweet.user.name, 20)}
-          {tweet.user.verified ||
-            (tweet.user.is_blue_verified && (
-              <Verified className="ml-1 inline size-4 text-blue-500" />
-            ))}
-        </a>
-        <div className="flex items-center space-x-1">
-          <a
-            href={tweet.user.url}
-            target="_blank"
-            rel="noreferrer"
-            className="text-sm text-gray-500 transition-all duration-75"
-          >
-            @{truncate(tweet.user.screen_name, 16)}
-          </a>
-        </div>
-      </div>
-    </div>
-    <a href={tweet.url} target="_blank" rel="noreferrer">
-      <span className="sr-only">Link to tweet</span>
-      <Twitter className="size-5 items-start text-[#3BA9EE] transition-all ease-in-out hover:scale-105" />
-    </a>
+    )}
   </div>
 )
-
-export const TweetBody = ({ tweet }: { tweet: EnrichedTweet }) => (
-  <div className="leading-normal tracking-tighter break-words">
-    {tweet.entities.map((entity, idx) => {
-      switch (entity.type) {
-        case "url":
-        case "symbol":
-        case "hashtag":
-        case "mention":
-          return (
-            <a
-              key={idx}
-              href={entity.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-normal text-gray-500"
-            >
-              <span>{entity.text}</span>
-            </a>
-          )
-        case "text":
-          return (
-            <span
-              key={idx}
-              className="text-sm font-normal"
-              dangerouslySetInnerHTML={{ __html: entity.text }}
-            />
-          )
-      }
-    })}
-  </div>
-)
-
-export const TweetMedia = ({ tweet }: { tweet: EnrichedTweet }) => {
-  if (!tweet.video && !tweet.photos) return null
-  return (
-    <div className="flex flex-1 items-center justify-center">
-      {tweet.video && (
-        <video
-          poster={tweet.video.poster}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="rounded-xl border shadow-sm"
-        >
-          <source src={tweet.video.variants[0].src} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      )}
-      {tweet.photos && (
-        <div className="relative flex transform-gpu snap-x snap-mandatory gap-4 overflow-x-auto">
-          <div className="shrink-0 snap-center sm:w-2" />
-          {tweet.photos.map((photo) => (
-            <img
-              key={photo.url}
-              src={photo.url}
-              width={photo.width}
-              height={photo.height}
-              title={"Photo by " + tweet.user.name}
-              alt={tweet.text}
-              className="h-64 w-5/6 shrink-0 snap-center snap-always rounded-xl border object-cover shadow-sm"
-            />
-          ))}
-          <div className="shrink-0 snap-center sm:w-2" />
-        </div>
-      )}
-      {!tweet.video &&
-        !tweet.photos &&
-        // @ts-expect-error package doesn't have type definitions
-        tweet?.card?.binding_values?.thumbnail_image_large?.image_value.url && (
-          <img
-            src={
-              // @ts-expect-error package doesn't have type definitions
-              tweet.card.binding_values.thumbnail_image_large.image_value.url
-            }
-            className="h-64 rounded-xl border object-cover shadow-sm"
-            alt={tweet.text}
-          />
-        )}
-    </div>
-  )
-}
 
 export const MagicTweet = ({
   tweet,
   className,
-  ...props
 }: {
   tweet: Tweet
   className?: string
 }) => {
-  const enrichedTweet = enrichTweet(tweet)
+  const raw = tweet as Tweet & {
+    entities?: unknown
+    text?: string
+    full_text?: string
+    id_str?: string
+  }
+
+  let enrichedTweet: EnrichedTweet | null = null
+
+  try {
+    const normalizedTweet = {
+      ...raw,
+      entities: Array.isArray(raw.entities)
+        ? raw.entities
+        : [],
+    } as Tweet
+
+    enrichedTweet = enrichTweet(normalizedTweet)
+  } catch (error) {
+    console.error("Error enriching tweet:", error)
+  }
+
+  const user = enrichedTweet?.user ?? tweet.user
+
+  if (!user) {
+    return (
+      <TweetNotFound
+        id={tweet.id_str}
+        className={className}
+      />
+    )
+  }
+
+  const tweetUrl =
+    enrichedTweet?.url ||
+    `https://x.com/i/status/${tweet.id_str}`
+
+  const tweetText =
+    raw.full_text || raw.text || ""
+
+  const entities = enrichedTweet?.entities
+
+  const photos = enrichedTweet?.photos
+  const video = enrichedTweet?.video
+
   return (
-    <div
+    <article
       className={cn(
-        "relative flex h-full w-full max-w-lg flex-col gap-2 overflow-hidden rounded-lg border p-4 backdrop-blur-md",
+        "relative flex h-full w-full min-w-72 max-w-lg flex-col gap-3 overflow-hidden rounded-lg border p-4 backdrop-blur-md",
         className
       )}
-      {...props}
     >
-      <TweetHeader tweet={enrichedTweet} />
-      <TweetBody tweet={enrichedTweet} />
-      <TweetMedia tweet={enrichedTweet} />
-    </div>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          {user.profile_image_url_https && (
+            <img
+              src={user.profile_image_url_https}
+              alt={user.name || "Profile"}
+              width={44}
+              height={44}
+              className="h-11 w-11 rounded-full object-cover"
+            />
+          )}
+
+          <div className="min-w-0">
+            <p className="truncate font-semibold">
+              {user.name}
+              {(user.verified || user.is_blue_verified) && (
+                <span className="ml-1 text-blue-500">
+                  ✓
+                </span>
+              )}
+            </p>
+            <p className="truncate text-sm text-gray-500">
+              @{user.screen_name}
+            </p>
+          </div>
+        </div>
+
+        <a
+          href={tweetUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="shrink-0 text-sm font-bold text-gray-500"
+          aria-label="View on X"
+        >
+          X
+        </a>
+      </div>
+
+      <div className="whitespace-pre-wrap break-words text-sm leading-relaxed">
+        {Array.isArray(entities) && entities.length > 0
+          ? entities.map((entity, index) => {
+              if (entity.type === "text") {
+                return (
+                  <span key={index}>
+                    {entity.text}
+                  </span>
+                )
+              }
+
+              return (
+                <a
+                  key={index}
+                  href={entity.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline"
+                >
+                  {entity.text}
+                </a>
+              )
+            })
+          : tweetText}
+      </div>
+
+      {Array.isArray(photos) && photos.length > 0 && (
+        <div className="flex gap-2 overflow-x-auto">
+          {photos.map((photo) => (
+            <img
+              key={photo.url}
+              src={photo.url}
+              alt="Tweet media"
+              className="max-h-72 w-full rounded-lg object-cover"
+            />
+          ))}
+        </div>
+      )}
+
+      {video && (
+        <video
+          poster={video.poster}
+          controls
+          playsInline
+          className="w-full rounded-lg"
+        >
+          {video.variants
+            .filter((variant) => variant.type === "video/mp4")
+            .slice(0, 1)
+            .map((variant) => (
+              <source
+                key={variant.src}
+                src={variant.src}
+                type="video/mp4"
+              />
+            ))}
+        </video>
+      )}
+
+      <a
+        href={tweetUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-auto text-xs text-gray-500 hover:underline"
+      >
+        View original tweet
+      </a>
+    </article>
   )
 }
 
-/**
- * TweetCard (Client Side)
- */
 export const TweetCard = ({
   id,
-  components,
-  fallback = <TweetSkeleton />,
+  className,
   onError,
-  ...props
-}: TweetProps & {
-  className?: string
-}) => {
-  const [tweet, setTweet] = useState<Tweet | undefined>(undefined)
+}: TweetCardProps) => {
+  const [tweet, setTweet] = useState<Tweet | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (id) {
-      fetch(`/api/tweet/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            throw new Error(data.error)
-          }
+    let cancelled = false
+
+    const fetchTweet = async () => {
+      setLoading(true)
+      setTweet(null)
+      setError(null)
+
+      try {
+        if (!id) {
+          throw new Error("Tweet ID is missing")
+        }
+
+        const response = await fetch(
+          `/api/tweet/${encodeURIComponent(id)}`
+        )
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch tweet: ${response.status}`
+          )
+        }
+
+        const data: Tweet & { error?: string } =
+          await response.json()
+
+        if (data.error) {
+          throw new Error(data.error)
+        }
+
+        if (!data.id_str) {
+          throw new Error("Invalid tweet data")
+        }
+
+        if (!cancelled) {
           setTweet(data)
-        })
-        .catch((err) => {
-          if (onError) {
-            onError(err)
-          } else {
-            console.error(err)
-          }
-        })
-        .finally(() => setLoading(false))
-    } else {
-      setLoading(false)
+        }
+      } catch (err) {
+        if (!cancelled) {
+          const message =
+            err instanceof Error
+              ? err.message
+              : "Unknown error"
+
+          console.error(`Tweet ${id}:`, err)
+          setError(message)
+
+          onError?.(
+            err instanceof Error
+              ? err
+              : new Error(message)
+          )
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false)
+        }
+      }
+    }
+
+    fetchTweet()
+
+    return () => {
+      cancelled = true
     }
   }, [id, onError])
 
   if (loading) {
-    return fallback
+    return <TweetSkeleton className={className} />
   }
 
-  if (!tweet) {
-    return null
+  if (error || !tweet) {
+    return (
+      <TweetNotFound
+        id={id}
+        className={className}
+      />
+    )
   }
 
-  return <MagicTweet tweet={tweet} {...props} />
+  return (
+    <MagicTweet
+      tweet={tweet}
+      className={className}
+    />
+  )
 }
