@@ -27,13 +27,15 @@ export const metadata: Metadata = {
   keywords: [
     "AlphaTrioTech",
     "Alpha Trio Tech",
+    "AlphaTrio Tech",
     "alphatriotech.com",
     "Software Development",
     "Artificial Intelligence",
     "AI Solutions",
     "IT Automation",
     "Web Development",
-    "Digital Solutions",
+    "Digital Transformation",
+    "IT Solutions",
   ],
 
   alternates: {
@@ -52,21 +54,24 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AlphaTrioTech | Software Development & AI Solutions",
     description:
-      "Explore AlphaTrioTech's software development, artificial intelligence, IT automation, and digital solutions.",
+      "Explore AlphaTrioTech's software development, artificial intelligence, IT automation, and digital transformation services.",
     url: "https://www.alphatriotech.com/",
     siteName: "AlphaTrioTech",
     type: "website",
+    locale: "en_US",
   },
 
   twitter: {
     card: "summary",
     title: "AlphaTrioTech | Software Development & AI Solutions",
     description:
-      "Software development, AI solutions, and IT automation by AlphaTrioTech.",
+      "Software development, AI solutions, web applications, and IT automation by AlphaTrioTech.",
   },
 
   icons: {
     icon: "/images/alphatrio.png",
+    shortcut: "/images/alphatrio.png",
+    apple: "/images/alphatrio.png",
   },
 };
 
